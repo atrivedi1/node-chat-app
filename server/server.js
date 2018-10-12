@@ -18,10 +18,19 @@ app.use(bodyParser.json());
 io.on('connection', (socket) => {
 	console.log("New user connected");
 
+	socket.emit('newMessage', {
+		from: 'Akash',
+		text: "Hell yeah",
+		createdAt: 492
+	});
+
+	socket.on('createMessage', (newMessage) => {
+		console.log('Message created:', newMessage);
+	})
+	
 	socket.on('disconnect', () => {
 		console.log("client disconnected")
-	})
-
+	});
 })
 
 server.listen(port, () => {
