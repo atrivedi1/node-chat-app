@@ -18,14 +18,14 @@ app.use(bodyParser.json());
 io.on('connection', (socket) => {
 	console.log("New user connected");
 
-	socket.emit('newMessage', {
-		from: 'Akash',
-		text: "Hell yeah",
-		createdAt: 492
-	});
-
-	socket.on('createMessage', (newMessage) => {
-		console.log('Message created:', newMessage);
+	socket.on('createMessage', (message) => {
+		console.log('Message created:', message);
+		
+		io.emit('newMessage', {
+			from: message.from,
+			text: message.text,
+			createdAt: new Date().getTime()
+		})
 	})
 	
 	socket.on('disconnect', () => {
