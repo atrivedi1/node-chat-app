@@ -18,14 +18,32 @@ app.use(bodyParser.json());
 io.on('connection', (socket) => {
 	console.log("New user connected");
 
+	socket.emit('newMessage', {
+		from: 'Admin',
+		text: 'Welcome to the coolest chat app on the planet!',
+		createdAt: new Date().getTime()
+	});
+
+	socket.broadcast.emit('newMessage', {
+		from: 'Admin',
+		text: 'New user joined!',
+		createdAt: new Date().getTime()
+	})
+	
 	socket.on('createMessage', (message) => {
 		console.log('Message created:', message);
-		
+
 		io.emit('newMessage', {
 			from: message.from,
 			text: message.text,
 			createdAt: new Date().getTime()
 		})
+		
+		// socket.broadcast.emit('newMessage', {
+		// 	from: message.from,
+		// 	text: message.text,
+		// 	createdAt: new Date().getTime()
+		// })
 	})
 	
 	socket.on('disconnect', () => {
